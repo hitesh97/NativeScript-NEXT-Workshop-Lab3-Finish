@@ -4,7 +4,7 @@ var localStorage = require("../../shared/local-storage/local-storage");
 var socialShare = require("../social-share/social-share");
 var utilities = require("../../shared/utilities");
 var dialogsModule = require("ui/dialogs");
-var analyticsMonitor = require("../../shared/analytics");
+//var analyticsMonitor = require("../../shared/analytics");
 
 var observable = require("data/observable");
 var viewModel = new observable.Observable();
@@ -29,13 +29,13 @@ viewModel.refreshMeme = function () {
 		var image = imageManipulation.addText(viewModel.selectedImage, viewModel.topText, viewModel.bottomText, viewModel.fontSize, viewModel.isBlackText);
 		viewModel.set("memeImage", image);
 	} catch (exception) {
-		analyticsMonitor.trackException(exception, 'Failed Refreshing Meme Image');
+		//analyticsMonitor.trackException(exception, 'Failed Refreshing Meme Image');
 	}
 };
 
 //Save Locally
 viewModel.saveLocally = function() {
-	analyticsMonitor.trackFeature("CreateMeme.SaveLocally");
+	//analyticsMonitor.trackFeature("CreateMeme.SaveLocally");
 	this.refreshMeme();
 	var saved = localStorage.saveLocally(this.uniqueImageName, this.memeImage);
 
@@ -54,12 +54,12 @@ viewModel.saveLocally = function() {
 
 //Share
 viewModel.share = function() {
-	analyticsMonitor.trackFeature("CreateMeme.Share");
+	//analyticsMonitor.trackFeature("CreateMeme.Share");
 	socialShare.share(this.memeImage);
 }
 
 //---EVENT HANDLER---//
-viewModel.addEventListener(observable.Observable.propertyChangeEvent, function(changes) {
+viewModel.addEventListener(observable.knownEvents.propertyChange, function(changes) {
 	//skip if memeImage changes
 	if (changes.propertyName === "memeImage") {
 		return;
