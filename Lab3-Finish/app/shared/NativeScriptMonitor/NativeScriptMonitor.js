@@ -1,8 +1,7 @@
 var http = require('http'),
     LocationManager = require('location').LocationManager,
     analytics = require('./EqatecMonitor'),
-    deviceInfo = require('./DeviceInfo'),
-    UserPreferences = require('application-settings');
+    deviceInfo = require('./DeviceInfo');
 
 function generateUUID() {
     var d = new Date().getTime();
@@ -45,11 +44,7 @@ exports.Monitor = function(settings) {
 
     var monitor = global._eqatec.createMonitor(eqatecSettings);
 
-    var userId = UserPreferences.getString('analytics-user-id');
-    if (typeof userId === 'undefined' || userId === null) {
-        userId = generateUUID();
-        UserPreferences.setString('analytics-user-id', userId);
-    }
+    var userId = generateUUID();
 
     monitor.setUserID(userId);
     return monitor;
